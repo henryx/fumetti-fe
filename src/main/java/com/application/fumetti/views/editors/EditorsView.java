@@ -11,6 +11,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.icon.Icon;
@@ -43,10 +44,12 @@ public class EditorsView extends VerticalLayout {
     public EditorsView(Configuration config) {
         this.config = config;
 
-        H1 title = new H1("Editori");
+        var title = new H1("Editori");
         title.setVisible(true);
 
-        Grid<EditorResult> grid = new Grid<>(EditorResult.class, false);
+        var grid = new Grid<>(EditorResult.class, false);
+        grid.setSelectionMode(Grid.SelectionMode.MULTI);
+        grid.addColumn(EditorResult::getId).setHeader("Id").setVisible(false);
         grid.addColumn(EditorResult::getName).setHeader("Nome");
         grid.addColumn(EditorResult::getSite).setHeader("Sede");
         grid.addColumn(EditorResult::getWebsite).setHeader("Sito web");
@@ -56,6 +59,7 @@ public class EditorsView extends VerticalLayout {
             grid.setItems(data.getData());
         } catch (URISyntaxException | IOException | InterruptedException ignored) {
         }
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
 
         var addButton = new Button(new Icon(VaadinIcon.PLUS));
         addButton.addThemeVariants(ButtonVariant.LUMO_ICON);
