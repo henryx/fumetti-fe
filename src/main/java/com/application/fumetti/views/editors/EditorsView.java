@@ -52,7 +52,18 @@ public class EditorsView extends VerticalLayout {
         } catch (URISyntaxException | IOException | InterruptedException ignored) {
         }
 
-        add(title, grid);
+        var addButton = new Button(new Icon(VaadinIcon.PLUS));
+        addButton.addThemeVariants(ButtonVariant.LUMO_ICON);
+        addButton.getElement().setAttribute("aria-label", "Aggiungi editore");
+        addClickListener(clickEvent -> {
+            // TODO: Open add dialog
+        });
+
+        var vl = new VerticalLayout();
+        vl.setAlignSelf(Alignment.END, addButton);
+
+        vl.add(addButton);
+        add(title, grid, vl);
     }
 
     private EditorsResponse fetch() throws URISyntaxException, IOException, InterruptedException {
@@ -87,7 +98,9 @@ public class EditorsView extends VerticalLayout {
             Button closeButton = new Button(new Icon("lumo", "cross"));
             closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
             closeButton.getElement().setAttribute("aria-label", "Close");
-            closeButton.addClickListener(event -> notification.close());
+            closeButton.addClickListener(event -> {
+                notification.close();
+            });
 
             HorizontalLayout layout = new HorizontalLayout(text, closeButton);
             layout.setAlignItems(Alignment.CENTER);
