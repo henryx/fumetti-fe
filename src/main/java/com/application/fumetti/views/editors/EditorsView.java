@@ -4,9 +4,12 @@ import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.EditorsResponse;
 import com.application.fumetti.mappers.data.EditorResult;
 import com.application.fumetti.views.MainLayout;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
@@ -16,6 +19,8 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.quarkus.annotation.VaadinServiceScoped;
@@ -55,8 +60,9 @@ public class EditorsView extends VerticalLayout {
         var addButton = new Button(new Icon(VaadinIcon.PLUS));
         addButton.addThemeVariants(ButtonVariant.LUMO_ICON);
         addButton.getElement().setAttribute("aria-label", "Aggiungi editore");
-        addClickListener(clickEvent -> {
-            // TODO: Open add dialog
+        addButton.addClickListener(clickEvent -> {
+            var dialog = new AddEditorDialog();
+            dialog.open();
         });
 
         var vl = new VerticalLayout();
