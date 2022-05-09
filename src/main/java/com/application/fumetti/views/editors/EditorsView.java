@@ -3,6 +3,7 @@ package com.application.fumetti.views.editors;
 import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.EditorsResponse;
 import com.application.fumetti.mappers.data.EditorResult;
+import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -44,7 +45,8 @@ public class EditorsView extends VerticalLayout {
             var body = req.get("/editors");
             var data = EditorsResponse.map(body);
             grid.setItems(data.getData());
-        } catch (URISyntaxException | IOException | InterruptedException ignored) {
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            Notifications.error(e);
         }
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
 
