@@ -11,6 +11,9 @@ public abstract class Response<T> extends Mapper {
     @JsonProperty("result")
     private String result;
 
+    @JsonProperty("message")
+    private String message;
+
     @JsonCreator
     public Response() {
     }
@@ -30,6 +33,15 @@ public abstract class Response<T> extends Mapper {
 
     public T setResult(String result) {
         this.result = result;
+        return (T) this;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public T setMessage(String message) {
+        this.message = message;
         return (T) this;
     }
 }
