@@ -10,8 +10,8 @@ public class EditorResult {
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("site")
-    private String site;
+    @JsonProperty("hq")
+    private String hq;
 
     @JsonProperty("nation")
     private NationResult nation;
@@ -41,12 +41,12 @@ public class EditorResult {
         return this;
     }
 
-    public String getSite() {
-        return site;
+    public String getHq() {
+        return hq;
     }
 
-    public EditorResult setSite(String site) {
-        this.site = site;
+    public EditorResult setHq(String hq) {
+        this.hq = hq;
         return this;
     }
 
