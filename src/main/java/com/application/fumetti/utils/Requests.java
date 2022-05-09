@@ -52,23 +52,7 @@ public class Requests {
 
             return response.body();
         } catch (URISyntaxException | InterruptedException | IOException e) {
-            Notification notification = new Notification();
-            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-
-            Div text = new Div(new Text("Failed to retrieve data: " + e.getMessage()));
-
-            Button closeButton = new Button(new Icon("lumo", "cross"));
-            closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
-            closeButton.getElement().setAttribute("aria-label", "Close");
-            closeButton.addClickListener(event -> notification.close());
-
-            HorizontalLayout layout = new HorizontalLayout(text, closeButton);
-            layout.setAlignItems(FlexComponent.Alignment.CENTER);
-
-            notification.add(layout);
-            notification.open();
-            notification.setPosition(Notification.Position.MIDDLE);
-
+            Notifications.error(e);
             throw e;
         }
     }
