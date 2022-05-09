@@ -11,6 +11,12 @@ public class CurrencyResult {
     @JsonProperty("symbol")
     private String symbol;
 
+    @JsonProperty("value_lire")
+    private Double valueLire;
+
+    @JsonProperty("value_euro")
+    private Double valueEuro;
+
     @JsonCreator
     public CurrencyResult() {
     }
@@ -39,6 +45,24 @@ public class CurrencyResult {
 
     public CurrencyResult setSymbol(String symbol) {
         this.symbol = symbol;
+        return this;
+    }
+
+    public Double getValueLire() {
+        return valueLire;
+    }
+
+    public CurrencyResult setValueLire(Double valueLire) {
+        this.valueLire = valueLire;
+        return this;
+    }
+
+    public Double getValueEuro() {
+        return valueEuro;
+    }
+
+    public CurrencyResult setValueEuro(Double valueEuro) {
+        this.valueEuro = valueEuro;
         return this;
     }
 }
