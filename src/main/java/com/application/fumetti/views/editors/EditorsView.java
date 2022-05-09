@@ -58,10 +58,7 @@ public class EditorsView extends VerticalLayout {
             dialog.open();
         });
 
-        var vl = new VerticalLayout();
-        vl.setAlignSelf(Alignment.END, addButton);
-
-        vl.add(addButton);
-        add(title, grid, vl);
+        setSpacing(false);
+        add(title, addButton, grid);
     }
 }
