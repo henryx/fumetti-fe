@@ -37,7 +37,7 @@ public class EditorsView extends VerticalLayout {
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
         grid.addColumn(EditorResult::getId).setHeader("Id").setVisible(false);
         grid.addColumn(EditorResult::getName).setHeader("Nome");
-        grid.addColumn(EditorResult::getSite).setHeader("Sede");
+        grid.addColumn(EditorResult::getHq).setHeader("Sede");
         grid.addColumn(EditorResult::getWebsite).setHeader("Sito web");
 
         try {
