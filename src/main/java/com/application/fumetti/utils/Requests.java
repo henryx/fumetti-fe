@@ -1,15 +1,6 @@
 package com.application.fumetti.utils;
 
 import com.application.fumetti.Configuration;
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import org.apache.http.client.HttpResponseException;
 
 import java.io.IOException;
@@ -22,10 +13,15 @@ import java.time.Duration;
 
 public class Requests {
     private final Configuration config;
+    private final HttpClient client;
 
     public Requests(Configuration config) {
-
         this.config = config;
+
+        this.client = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .connectTimeout(Duration.ofSeconds(10))
+                .build();
     }
 
     public String get(String path) throws URISyntaxException, IOException, InterruptedException {
@@ -34,18 +30,13 @@ public class Requests {
                     null, this.config.host(), this.config.port(),
                     path, null, null);
 
-            var client = HttpClient.newBuilder()
-                    .version(HttpClient.Version.HTTP_1_1)
-                    .connectTimeout(Duration.ofSeconds(10))
-                    .build();
-
             var request = HttpRequest.newBuilder()
                     .GET()
                     .uri(uri)
                     .setHeader("Accept", "application/json")
                     .build();
 
-            var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            var response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 throw new HttpResponseException(response.statusCode(), "Error in connection");
             }
