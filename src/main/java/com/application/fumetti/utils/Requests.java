@@ -43,7 +43,6 @@ public class Requests {
 
             return response.body();
         } catch (URISyntaxException | InterruptedException | IOException e) {
-            Notifications.error(e);
             throw e;
         }
     }
