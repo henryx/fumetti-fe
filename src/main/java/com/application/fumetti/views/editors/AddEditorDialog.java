@@ -21,6 +21,10 @@ import java.net.URISyntaxException;
 public class AddEditorDialog extends Dialog {
 
     private final Configuration config;
+
+    private TextField nameField;
+    private TextField siteField;
+    private TextField websiteField;
     private NationResult nationSelected;
 
     public AddEditorDialog(Configuration config) {
@@ -40,9 +44,9 @@ public class AddEditorDialog extends Dialog {
     private FormLayout initForm() {
         var req = new Requests(this.config);
 
-        var firstNameField = new TextField("Nome", "", "");
-        var lastNameField = new TextField("Sede", "", "");
-        var websiteField = new TextField("Sito Web", "", "");
+        this.nameField = new TextField("Nome", "", "");
+        this.siteField = new TextField("Sede", "", "");
+        this.websiteField = new TextField("Sito Web", "", "");
 
         var nationsCombo = new ComboBox<NationResult>("Nazione");
         try {
@@ -59,7 +63,7 @@ public class AddEditorDialog extends Dialog {
 
         var layout = new FormLayout();
         layout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 2));
-        layout.add(firstNameField, lastNameField, websiteField, nationsCombo);
+        layout.add(this.nameField, this.siteField, this.websiteField, nationsCombo);
 
         return layout;
     }
