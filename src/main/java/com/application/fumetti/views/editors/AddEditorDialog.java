@@ -1,7 +1,10 @@
 package com.application.fumetti.views.editors;
 
 import com.application.fumetti.Configuration;
+import com.application.fumetti.mappers.NationsResponse;
 import com.application.fumetti.mappers.data.NationResult;
+import com.application.fumetti.utils.Notifications;
+import com.application.fumetti.utils.Requests;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -11,6 +14,9 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class AddEditorDialog extends Dialog {
 
@@ -32,11 +38,21 @@ public class AddEditorDialog extends Dialog {
     }
 
     private FormLayout initForm() {
+        var req = new Requests(this.config);
+
         var firstNameField = new TextField("Nome", "", "");
         var lastNameField = new TextField("Sede", "", "");
         var websiteField = new TextField("Sito Web", "", "");
 
         var nationsCombo = new ComboBox<NationResult>("Nazione");
+        try {
+            var body = req.get("/nations");
+            var data = NationsResponse.map(body);
+            nationsCombo.setItems(data.getData());
+        } catch (URISyntaxException | IOException | InterruptedException e) {
+            Notifications.error(e);
+        }
+
         nationsCombo.setItemLabelGenerator(NationResult::getName);
         nationsCombo.addValueChangeListener(e -> nationSelected = e.getValue());
 
