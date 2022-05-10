@@ -54,7 +54,7 @@ public class EditorsView extends VerticalLayout {
         addButton.addThemeVariants(ButtonVariant.LUMO_ICON);
         addButton.getElement().setAttribute("aria-label", "Aggiungi editore");
         addButton.addClickListener(clickEvent -> {
-            var dialog = new AddEditorDialog();
+            var dialog = new AddEditorDialog(this.config);
             dialog.open();
         });
 

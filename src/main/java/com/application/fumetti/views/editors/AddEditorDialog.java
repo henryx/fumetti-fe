@@ -1,6 +1,6 @@
 package com.application.fumetti.views.editors;
 
-import com.application.fumetti.utils.Requests;
+import com.application.fumetti.Configuration;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -12,9 +12,10 @@ import com.vaadin.flow.component.textfield.TextField;
 
 public class AddEditorDialog extends Dialog {
 
-    private Requests req;
+    private final Configuration config;
 
-    public AddEditorDialog() {
+    public AddEditorDialog(Configuration config) {
+        this.config = config;
         var vl = new VerticalLayout();
         var formLayout = initForm();
 
