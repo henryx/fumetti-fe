@@ -1,5 +1,6 @@
 package com.application.fumetti.views.editors;
 
+import com.application.fumetti.utils.Requests;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -7,10 +8,11 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 
 public class AddEditorDialog extends Dialog {
+
+    private Requests req;
 
     public AddEditorDialog() {
         var vl = new VerticalLayout();
@@ -26,15 +28,14 @@ public class AddEditorDialog extends Dialog {
     }
 
     private FormLayout initForm() {
-        var firstNameField = new TextField("First name", "John", "");
-        var lastNameField = new TextField("Last name", "Smith", "");
-        var emailField = new EmailField("Email address");
-        emailField.setValue("john.smith@example.com");
+        var firstNameField = new TextField("Nome", "", "");
+        var lastNameField = new TextField("Sede", "", "");
+        var websiteField = new TextField("Sito Web", "", "");
+
 
         var layout = new FormLayout();
         layout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 2));
-        layout.setColspan(emailField, 2);
-        layout.add(firstNameField, lastNameField, emailField);
+        layout.add(firstNameField, lastNameField, websiteField);
 
         return layout;
     }
