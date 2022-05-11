@@ -25,6 +25,7 @@ import java.net.URISyntaxException;
 @Route(value = "editors", layout = MainLayout.class)
 public class EditorsView extends VerticalLayout {
     private final Configuration config;
+    private final Grid<EditorResult> grid;
 
     @VaadinServiceScoped
     public EditorsView(Configuration config) {
@@ -34,31 +35,33 @@ public class EditorsView extends VerticalLayout {
         var title = new H1("Editori");
         title.setVisible(true);
 
-        var grid = new Grid<>(EditorResult.class, false);
-        grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        grid.addColumn(EditorResult::getId).setHeader("Id").setVisible(false);
-        grid.addColumn(EditorResult::getName).setHeader("Nome");
-        grid.addColumn(EditorResult::getHq).setHeader("Sede");
-        grid.addColumn(EditorResult::getWebsite).setHeader("Sito web");
+
+        this.grid = new Grid<>(EditorResult.class, false);
+        this.grid.setSelectionMode(Grid.SelectionMode.MULTI);
+        this.grid.addColumn(EditorResult::getId).setHeader("Id").setVisible(false);
+        this.grid.addColumn(EditorResult::getName).setHeader("Nome");
+        this.grid.addColumn(EditorResult::getHq).setHeader("Sede");
+        this.grid.addColumn(EditorResult::getWebsite).setHeader("Sito web");
 
         try {
             var body = req.get("/editors");
             var data = EditorsResponse.map(body);
-            grid.setItems(data.getData());
+            this.grid.setItems(data.getData());
         } catch (URISyntaxException | IOException | InterruptedException e) {
             Notifications.error(e);
         }
-        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
+        this.grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
 
         var addButton = new Button(new Icon(VaadinIcon.PLUS));
         addButton.addThemeVariants(ButtonVariant.LUMO_ICON);
         addButton.getElement().setAttribute("aria-label", "Aggiungi editore");
         addButton.addClickListener(clickEvent -> {
             var dialog = new AddEditorDialog(this.config);
+            dialog.setGrid(this.grid);
             dialog.open();
         });
 
         setSpacing(false);
-        add(title, addButton, grid);
+        add(title, addButton, this.grid);
     }
 }
