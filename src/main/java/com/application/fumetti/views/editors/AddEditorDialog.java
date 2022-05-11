@@ -1,7 +1,9 @@
 package com.application.fumetti.views.editors;
 
 import com.application.fumetti.Configuration;
+import com.application.fumetti.mappers.EditorsResponse;
 import com.application.fumetti.mappers.NationsResponse;
+import com.application.fumetti.mappers.data.EditorResult;
 import com.application.fumetti.mappers.data.NationResult;
 import com.application.fumetti.mappers.requests.EditorsRequest;
 import com.application.fumetti.utils.Notifications;
@@ -11,6 +13,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -27,6 +30,7 @@ public class AddEditorDialog extends Dialog {
     private TextField siteField;
     private TextField websiteField;
     private NationResult nationSelected;
+    private Grid<EditorResult> grid;
 
     public AddEditorDialog(Configuration config) {
         this.config = config;
@@ -81,6 +85,12 @@ public class AddEditorDialog extends Dialog {
                         this.nationSelected);
 
                 req.post("/editors", body.toString());
+
+                var items = req.get("/editors");
+                var data = EditorsResponse.map(items);
+                this.grid.setItems(data.getData());
+                this.grid.getDataProvider().refreshAll();
+
                 close();
             } catch (URISyntaxException | IOException | InterruptedException ex) {
                 Notifications.error(ex);
@@ -94,5 +104,10 @@ public class AddEditorDialog extends Dialog {
         layout.add(save, cancel);
 
         return layout;
+    }
+
+    public AddEditorDialog setGrid(Grid<EditorResult> grid) {
+        this.grid = grid;
+        return this;
     }
 }
