@@ -46,4 +46,28 @@ public class Requests {
             throw e;
         }
     }
+
+    public String post(String path, String body) throws URISyntaxException, IOException, InterruptedException {
+        try {
+            var uri = new URI(this.config.proto(),
+                    null, this.config.host(), this.config.port(),
+                    path, null, null);
+
+            var request = HttpRequest.newBuilder()
+                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .uri(uri)
+                    .setHeader("Content-Type", "application/json")
+                    .setHeader("Accept", "application/json")
+                    .build();
+
+            var response = this.client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new HttpResponseException(response.statusCode(), "Error in connection: " + response.body());
+            }
+
+            return response.body();
+        } catch (URISyntaxException | InterruptedException | IOException e) {
+            throw e;
+        }
+    }
 }
