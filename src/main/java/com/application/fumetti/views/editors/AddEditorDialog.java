@@ -3,6 +3,7 @@ package com.application.fumetti.views.editors;
 import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.NationsResponse;
 import com.application.fumetti.mappers.data.NationResult;
+import com.application.fumetti.mappers.requests.EditorsRequest;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.vaadin.flow.component.button.Button;
@@ -71,6 +72,20 @@ public class AddEditorDialog extends Dialog {
     private HorizontalLayout initButtons() {
         var save = new Button("Salva");
         var cancel = new Button("Annulla", e -> close());
+        save.addClickListener(e -> {
+            try {
+                var req = new Requests(this.config);
+                var body = new EditorsRequest(this.nameField.getValue(),
+                        this.siteField.getValue(),
+                        this.websiteField.getValue(),
+                        this.nationSelected);
+
+                req.post("/editors", body.toString());
+                close();
+            } catch (URISyntaxException | IOException | InterruptedException ex) {
+                Notifications.error(ex);
+            }
+        });
 
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.getStyle().set("margin-inline-end", "auto");
