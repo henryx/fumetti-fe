@@ -1,11 +1,12 @@
 package com.application.fumetti.views.editors;
 
 import com.application.fumetti.Configuration;
-import com.application.fumetti.mappers.EditorsResponse;
+import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.EditorResult;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,6 +19,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.quarkus.annotation.VaadinServiceScoped;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -26,6 +28,9 @@ import java.net.URISyntaxException;
 public class EditorsView extends VerticalLayout {
     private final Configuration config;
     private final Grid<EditorResult> grid;
+
+    @Inject
+    ObjectMapper mapper;
 
     @VaadinServiceScoped
     public EditorsView(Configuration config) {
@@ -45,7 +50,7 @@ public class EditorsView extends VerticalLayout {
 
         try {
             var body = req.get("/editors");
-            var data = EditorsResponse.map(body);
+            var data = this.mapper.readValue(body, Response.class);
             this.grid.setItems(data.getData());
         } catch (URISyntaxException | IOException | InterruptedException e) {
             Notifications.error(e);

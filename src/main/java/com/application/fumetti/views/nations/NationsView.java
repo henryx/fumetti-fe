@@ -2,6 +2,7 @@ package com.application.fumetti.views.nations;
 
 import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.data.NationResult;
+import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
@@ -19,6 +20,7 @@ public class NationsView extends VerticalLayout {
     @VaadinServiceScoped
     public NationsView(Configuration config) {
         this.config = config;
+        var req = new Requests(this.config);
 
         var title = new H1("Nazioni");
         title.setVisible(true);

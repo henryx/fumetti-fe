@@ -1,13 +1,13 @@
 package com.application.fumetti.views.editors;
 
 import com.application.fumetti.Configuration;
-import com.application.fumetti.mappers.EditorsResponse;
-import com.application.fumetti.mappers.NationsResponse;
+import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.EditorResult;
 import com.application.fumetti.mappers.data.NationResult;
 import com.application.fumetti.mappers.requests.EditorsRequest;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -19,6 +19,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -31,6 +32,8 @@ public class AddEditorDialog extends Dialog {
     private TextField websiteField;
     private NationResult nationSelected;
     private Grid<EditorResult> grid;
+    @Inject
+    ObjectMapper mapper;
 
     public AddEditorDialog(Configuration config) {
         this.config = config;
@@ -56,7 +59,7 @@ public class AddEditorDialog extends Dialog {
         var nationsCombo = new ComboBox<NationResult>("Nazione");
         try {
             var body = req.get("/nations");
-            var data = NationsResponse.map(body);
+            var data = this.mapper.readValue(body, Response.class);
             nationsCombo.setItems(data.getData());
         } catch (URISyntaxException | IOException | InterruptedException e) {
             Notifications.error(e);
@@ -87,7 +90,7 @@ public class AddEditorDialog extends Dialog {
                 req.post("/editors", body.toString());
 
                 var items = req.get("/editors");
-                var data = EditorsResponse.map(items);
+                var data = this.mapper.readValue(items, Response.class);
                 this.grid.setItems(data.getData());
                 this.grid.getDataProvider().refreshAll();
 
