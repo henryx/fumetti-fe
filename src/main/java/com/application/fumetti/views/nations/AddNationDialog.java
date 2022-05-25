@@ -1,11 +1,7 @@
 package com.application.fumetti.views.nations;
 
 import com.application.fumetti.Configuration;
-import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.NationResult;
-import com.application.fumetti.mappers.requests.EditorsRequest;
-import com.application.fumetti.utils.Notifications;
-import com.application.fumetti.utils.Requests;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -14,13 +10,13 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
+import com.vaadin.flow.component.textfield.TextField;
 
 public class AddNationDialog extends Dialog {
     private final Configuration config;
     private Grid<NationResult> grid;
+    private TextField nameField;
+    private TextField signField;
 
     public AddNationDialog(Configuration config) {
         this.config = config;
@@ -37,7 +33,14 @@ public class AddNationDialog extends Dialog {
     }
 
     private FormLayout initForm() {
-        return null;
+        this.nameField = new TextField("Nome", "", "");
+        this.signField = new TextField("Sigla", "", "");
+
+        var layout = new FormLayout();
+        layout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 2));
+        layout.add(this.nameField, this.signField);
+
+        return layout;
     }
 
     private HorizontalLayout initButtons() {
