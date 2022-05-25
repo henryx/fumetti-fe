@@ -7,15 +7,18 @@ import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.quarkus.annotation.VaadinServiceScoped;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -50,6 +53,15 @@ public class NationsView extends VerticalLayout {
         }
         this.grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
 
-        add(title, this.grid);
+        var addButton = new Button(new Icon(VaadinIcon.PLUS));
+        addButton.addThemeVariants(ButtonVariant.LUMO_ICON);
+        addButton.getElement().setAttribute("aria-label", "Aggiungi editore");
+        addButton.addClickListener(clickEvent -> {
+            var dialog = new AddNationDialog(this.config);
+            dialog.setGrid(this.grid);
+            dialog.open();
+        });
+
+        add(title, addButton, this.grid);
     }
 }
