@@ -19,7 +19,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.quarkus.annotation.VaadinServiceScoped;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -28,13 +27,12 @@ import java.net.URISyntaxException;
 public class EditorsView extends VerticalLayout {
     private final Configuration config;
     private final Grid<EditorResult> grid;
-
-    @Inject
-    ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     @VaadinServiceScoped
     public EditorsView(Configuration config) {
         this.config = config;
+        this.mapper = new ObjectMapper();
         var req = new Requests(this.config);
 
         var title = new H1("Editori");

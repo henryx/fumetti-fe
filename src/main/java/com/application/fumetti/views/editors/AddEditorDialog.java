@@ -19,24 +19,24 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class AddEditorDialog extends Dialog {
 
     private final Configuration config;
+    private final ObjectMapper mapper;
 
     private TextField nameField;
     private TextField siteField;
     private TextField websiteField;
     private NationResult nationSelected;
     private Grid<EditorResult> grid;
-    @Inject
-    ObjectMapper mapper;
 
     public AddEditorDialog(Configuration config) {
         this.config = config;
+        this.mapper = new ObjectMapper();
+
         var vl = new VerticalLayout();
         var formLayout = initForm();
 
