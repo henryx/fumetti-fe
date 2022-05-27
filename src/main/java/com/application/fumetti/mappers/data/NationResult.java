@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class NationResult {
 
     @JsonProperty("id")
-    private int id;
+    private Long id;
 
     @JsonProperty("name")
     private String name;
@@ -21,11 +21,18 @@ public class NationResult {
     public NationResult() {
     }
 
-    public int getId() {
+    public NationResult(Long id, String name, String sign, CurrencyResult currency) {
+        this.id = id;
+        this.name = name;
+        this.sign = sign;
+        this.currency = currency;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public NationResult setId(int id) {
+    public NationResult setId(Long id) {
         this.id = id;
         return this;
     }

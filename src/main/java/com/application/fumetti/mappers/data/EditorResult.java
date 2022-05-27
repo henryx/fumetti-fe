@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EditorResult {
     @JsonProperty("id")
-    private int id;
+    private Long id;
 
     @JsonProperty("name")
     private String name;
@@ -23,11 +23,19 @@ public class EditorResult {
     public EditorResult() {
     }
 
-    public int getId() {
+    public EditorResult(Long id, String name, String hq, String website, NationResult nation) {
+        this.id = id;
+        this.name = name;
+        this.hq = hq;
+        this.website = website;
+        this.nation = nation;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public EditorResult setId(int id) {
+    public EditorResult setId(Long id) {
         this.id = id;
         return this;
     }
