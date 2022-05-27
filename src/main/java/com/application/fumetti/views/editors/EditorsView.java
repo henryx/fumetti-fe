@@ -2,9 +2,7 @@ package com.application.fumetti.views.editors;
 
 import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.Response;
-import com.application.fumetti.mappers.data.CurrencyResult;
 import com.application.fumetti.mappers.data.EditorResult;
-import com.application.fumetti.mappers.data.NationResult;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
@@ -22,7 +20,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.quarkus.annotation.VaadinServiceScoped;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
@@ -55,15 +52,7 @@ public class EditorsView extends VerticalLayout {
             var data = this.mapper.readValue(body, Response.class);
             var editors = data.getData().stream().map(e -> {
                 var map = (HashMap<String, Object>) e;
-                var nestedNation = (HashMap<String, Object>) map.get("nation");
-                var nestedCurrency = (HashMap<String, Object>) nestedNation.get("currency");
-
-                var currency = new CurrencyResult(Long.getLong(nestedCurrency.get("id").toString()), nestedCurrency.get("name").toString(),
-                        nestedCurrency.get("symbol").toString(), new BigDecimal(nestedCurrency.get("value_lire").toString()),
-                        new BigDecimal(nestedCurrency.get("value_euro").toString()));
-                var nation = new NationResult(Long.getLong(nestedNation.get("id").toString()), nestedNation.get("name").toString(),
-                        nestedNation.get("sign").toString(), currency);
-                return new EditorResult(Long.getLong(map.get("id").toString()), map.get("name").toString(), map.get("hq").toString(), map.get("website").toString(), nation);
+                return EditorResult.map(map);
             }).toList();
             this.grid.setItems(editors);
         } catch (URISyntaxException | IOException | InterruptedException e) {

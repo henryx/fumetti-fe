@@ -2,7 +2,6 @@ package com.application.fumetti.views.nations;
 
 import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.Response;
-import com.application.fumetti.mappers.data.CurrencyResult;
 import com.application.fumetti.mappers.data.NationResult;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
@@ -21,7 +20,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.quarkus.annotation.VaadinServiceScoped;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 
@@ -53,13 +51,7 @@ public class NationsView extends VerticalLayout {
 
             var nations = data.getData().stream().map(e -> {
                 var map = (HashMap<String, Object>) e;
-                var nestedMap = (HashMap<String, Object>) map.get("currency");
-                var currency = new CurrencyResult(Long.getLong(nestedMap.get("id").toString()), nestedMap.get("name").toString(),
-                        nestedMap.get("symbol").toString(), new BigDecimal(nestedMap.get("value_lire").toString()),
-                        new BigDecimal(nestedMap.get("value_euro").toString()));
-
-                return new NationResult(Long.getLong(map.get("id").toString()), map.get("name").toString(),
-                        map.get("sign").toString(), currency);
+                return NationResult.map(map);
             }).toList();
             this.grid.setItems(nations);
         } catch (URISyntaxException | IOException | InterruptedException e) {
