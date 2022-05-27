@@ -65,7 +65,7 @@ public class AddEditorDialog extends Dialog {
             Notifications.error(e);
         }
 
-        nationsCombo.setItemLabelGenerator(NationResult::getName);
+        nationsCombo.setItemLabelGenerator(NationResult::name);
         nationsCombo.addValueChangeListener(e -> nationSelected = e.getValue());
 
 

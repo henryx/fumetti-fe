@@ -41,10 +41,10 @@ public class EditorsView extends VerticalLayout {
 
         this.grid = new Grid<>(EditorResult.class, false);
         this.grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        this.grid.addColumn(EditorResult::getId).setHeader("Id").setVisible(false);
-        this.grid.addColumn(EditorResult::getName).setHeader("Nome");
-        this.grid.addColumn(EditorResult::getHq).setHeader("Sede");
-        this.grid.addColumn(EditorResult::getWebsite).setHeader("Sito web");
+        this.grid.addColumn(EditorResult::id).setHeader("Id").setVisible(false);
+        this.grid.addColumn(EditorResult::name).setHeader("Nome");
+        this.grid.addColumn(EditorResult::hq).setHeader("Sede");
+        this.grid.addColumn(EditorResult::website).setHeader("Sito web");
 
         try {
             var body = req.get("/editors");

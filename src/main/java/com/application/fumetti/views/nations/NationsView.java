@@ -23,9 +23,7 @@ import com.vaadin.quarkus.annotation.VaadinServiceScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @PageTitle("Nazioni")
 @Route(value = "nations", layout = MainLayout.class)
@@ -45,9 +43,9 @@ public class NationsView extends VerticalLayout {
 
         this.grid = new Grid<>(NationResult.class, false);
         this.grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        this.grid.addColumn(NationResult::getId).setHeader("Id").setVisible(false);
-        this.grid.addColumn(NationResult::getName).setHeader("Nome");
-        this.grid.addColumn(NationResult::getSign).setHeader("Simbolo");
+        this.grid.addColumn(NationResult::id).setHeader("Id").setVisible(false);
+        this.grid.addColumn(NationResult::name).setHeader("Nome");
+        this.grid.addColumn(NationResult::sign).setHeader("Simbolo");
 
         try {
             var body = req.get("/nations");
@@ -56,7 +54,7 @@ public class NationsView extends VerticalLayout {
             var nations = data.getData().stream().map(e -> {
                 var map = (HashMap<String, Object>) e;
                 var nestedMap = (HashMap<String, Object>) map.get("currency");
-                var currency =new  CurrencyResult(Long.getLong(nestedMap.get("id").toString()), nestedMap.get("name").toString(),
+                var currency = new CurrencyResult(Long.getLong(nestedMap.get("id").toString()), nestedMap.get("name").toString(),
                         nestedMap.get("symbol").toString(), new BigDecimal(nestedMap.get("value_lire").toString()),
                         new BigDecimal(nestedMap.get("value_euro").toString()));
 
