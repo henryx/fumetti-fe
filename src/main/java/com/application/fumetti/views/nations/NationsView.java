@@ -2,7 +2,7 @@ package com.application.fumetti.views.nations;
 
 import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.Response;
-import com.application.fumetti.mappers.data.NationResult;
+import com.application.fumetti.mappers.data.NationData;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
@@ -27,7 +27,7 @@ import java.util.HashMap;
 @Route(value = "nations", layout = MainLayout.class)
 public class NationsView extends VerticalLayout {
     private final Configuration config;
-    private final Grid<NationResult> grid;
+    private final Grid<NationData> grid;
     private final ObjectMapper mapper;
 
     @VaadinServiceScoped
@@ -39,11 +39,11 @@ public class NationsView extends VerticalLayout {
         var title = new H1("Nazioni");
         title.setVisible(true);
 
-        this.grid = new Grid<>(NationResult.class, false);
+        this.grid = new Grid<>(NationData.class, false);
         this.grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        this.grid.addColumn(NationResult::id).setHeader("Id").setVisible(false);
-        this.grid.addColumn(NationResult::name).setHeader("Nome");
-        this.grid.addColumn(NationResult::sign).setHeader("Simbolo");
+        this.grid.addColumn(NationData::id).setHeader("Id").setVisible(false);
+        this.grid.addColumn(NationData::name).setHeader("Nome");
+        this.grid.addColumn(NationData::sign).setHeader("Simbolo");
 
         try {
             var body = req.get("/nations");
@@ -51,7 +51,7 @@ public class NationsView extends VerticalLayout {
 
             var nations = data.getData().stream().map(e -> {
                 var map = (HashMap<String, Object>) e;
-                return NationResult.map(map);
+                return NationData.map(map);
             }).toList();
             this.grid.setItems(nations);
         } catch (URISyntaxException | IOException | InterruptedException e) {

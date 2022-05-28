@@ -2,8 +2,8 @@ package com.application.fumetti.views.editors;
 
 import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.Response;
-import com.application.fumetti.mappers.data.EditorResult;
-import com.application.fumetti.mappers.data.NationResult;
+import com.application.fumetti.mappers.data.EditorData;
+import com.application.fumetti.mappers.data.NationData;
 import com.application.fumetti.mappers.requests.EditorsRequest;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
@@ -31,8 +31,8 @@ public class AddEditorDialog extends Dialog {
     private TextField nameField;
     private TextField siteField;
     private TextField websiteField;
-    private NationResult nationSelected;
-    private Grid<EditorResult> grid;
+    private NationData nationSelected;
+    private Grid<EditorData> grid;
 
     public AddEditorDialog(Configuration config) {
         this.config = config;
@@ -57,23 +57,22 @@ public class AddEditorDialog extends Dialog {
         this.siteField = new TextField("Sede", "", "");
         this.websiteField = new TextField("Sito Web", "", "");
 
-        var nationsCombo = new ComboBox<NationResult>("Nazione");
+        var nationsCombo = new ComboBox<NationData>("Nazione");
         try {
             var body = req.get("/nations");
             var data = this.mapper.readValue(body, Response.class);
 
             var nations = data.getData().stream().map(e -> {
                 var map = (HashMap<String, Object>) e;
-                return NationResult.map(map);
+                return NationData.map(map);
             }).toList();
             nationsCombo.setItems(nations);
         } catch (URISyntaxException | IOException | InterruptedException e) {
             Notifications.error(e);
         }
 
-        nationsCombo.setItemLabelGenerator(NationResult::name);
+        nationsCombo.setItemLabelGenerator(NationData::name);
         nationsCombo.addValueChangeListener(e -> nationSelected = e.getValue());
-
 
         var layout = new FormLayout();
         layout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 2));
@@ -115,7 +114,7 @@ public class AddEditorDialog extends Dialog {
         return layout;
     }
 
-    public AddEditorDialog setGrid(Grid<EditorResult> grid) {
+    public AddEditorDialog setGrid(Grid<EditorData> grid) {
         this.grid = grid;
         return this;
     }

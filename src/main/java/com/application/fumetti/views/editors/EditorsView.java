@@ -2,7 +2,7 @@ package com.application.fumetti.views.editors;
 
 import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.Response;
-import com.application.fumetti.mappers.data.EditorResult;
+import com.application.fumetti.mappers.data.EditorData;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
@@ -27,7 +27,7 @@ import java.util.HashMap;
 @Route(value = "editors", layout = MainLayout.class)
 public class EditorsView extends VerticalLayout {
     private final Configuration config;
-    private final Grid<EditorResult> grid;
+    private final Grid<EditorData> grid;
     private final ObjectMapper mapper;
 
     @VaadinServiceScoped
@@ -40,19 +40,19 @@ public class EditorsView extends VerticalLayout {
         title.setVisible(true);
 
 
-        this.grid = new Grid<>(EditorResult.class, false);
+        this.grid = new Grid<>(EditorData.class, false);
         this.grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        this.grid.addColumn(EditorResult::id).setHeader("Id").setVisible(false);
-        this.grid.addColumn(EditorResult::name).setHeader("Nome");
-        this.grid.addColumn(EditorResult::hq).setHeader("Sede");
-        this.grid.addColumn(EditorResult::website).setHeader("Sito web");
+        this.grid.addColumn(EditorData::id).setHeader("Id").setVisible(false);
+        this.grid.addColumn(EditorData::name).setHeader("Nome");
+        this.grid.addColumn(EditorData::hq).setHeader("Sede");
+        this.grid.addColumn(EditorData::website).setHeader("Sito web");
 
         try {
             var body = req.get("/editors");
             var data = this.mapper.readValue(body, Response.class);
             var editors = data.getData().stream().map(e -> {
                 var map = (HashMap<String, Object>) e;
-                return EditorResult.map(map);
+                return EditorData.map(map);
             }).toList();
             this.grid.setItems(editors);
         } catch (URISyntaxException | IOException | InterruptedException e) {

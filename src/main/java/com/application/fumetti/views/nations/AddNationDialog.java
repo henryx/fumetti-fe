@@ -2,8 +2,8 @@ package com.application.fumetti.views.nations;
 
 import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.Response;
-import com.application.fumetti.mappers.data.CurrencyResult;
-import com.application.fumetti.mappers.data.NationResult;
+import com.application.fumetti.mappers.data.CurrencyData;
+import com.application.fumetti.mappers.data.NationData;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,10 +26,10 @@ public class AddNationDialog extends Dialog {
     private final Configuration config;
     private final ObjectMapper mapper;
 
-    private Grid<NationResult> grid;
+    private Grid<NationData> grid;
     private TextField nameField;
     private TextField signField;
-    private CurrencyResult currencySelected;
+    private CurrencyData currencySelected;
 
     public AddNationDialog(Configuration config) {
         this.config = config;
@@ -52,17 +52,17 @@ public class AddNationDialog extends Dialog {
 
         this.nameField = new TextField("Nome", "", "");
         this.signField = new TextField("Sigla", "", "");
-        var currenciesCombo = new ComboBox<CurrencyResult>("Valuta");
+        var currenciesCombo = new ComboBox<CurrencyData>("Valuta");
         try {
             var body = req.get("/currencies");
             var data = this.mapper.readValue(body, Response.class);
             var currencies = data.getData().stream().map(ie -> {
                 var map = (HashMap<String, Object>) ie;
-                return CurrencyResult.map(map);
+                return CurrencyData.map(map);
             }).toList();
             currenciesCombo.setItems(currencies);
 
-            currenciesCombo.setItemLabelGenerator(CurrencyResult::name);
+            currenciesCombo.setItemLabelGenerator(CurrencyData::name);
             currenciesCombo.addValueChangeListener(e -> currencySelected = e.getValue());
         } catch (URISyntaxException | IOException | InterruptedException e) {
             Notifications.error(e);
@@ -91,7 +91,7 @@ public class AddNationDialog extends Dialog {
         return layout;
     }
 
-    public AddNationDialog setGrid(Grid<NationResult> grid) {
+    public AddNationDialog setGrid(Grid<NationData> grid) {
         this.grid = grid;
         return this;
     }

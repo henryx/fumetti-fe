@@ -1,7 +1,7 @@
 package com.application.fumetti.mappers.requests;
 
 import com.application.fumetti.mappers.Mapper;
-import com.application.fumetti.mappers.data.NationResult;
+import com.application.fumetti.mappers.data.NationData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,10 +14,10 @@ public class EditorsRequest extends Mapper {
     @JsonProperty("website")
     private final String website;
     @JsonProperty("nation")
-    private final NationResult nation;
+    private final NationData nation;
 
     @JsonCreator
-    public EditorsRequest(String name, String hq, String website, NationResult nation) {
+    public EditorsRequest(String name, String hq, String website, NationData nation) {
         this.name = name;
         this.hq = hq;
         this.website = website;
@@ -36,7 +36,7 @@ public class EditorsRequest extends Mapper {
         return website;
     }
 
-    public NationResult getNation() {
+    public NationData getNation() {
         return nation;
     }
 }
