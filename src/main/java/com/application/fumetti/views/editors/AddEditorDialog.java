@@ -21,6 +21,7 @@ import com.vaadin.flow.component.textfield.TextField;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 public class AddEditorDialog extends Dialog {
 
@@ -60,7 +61,12 @@ public class AddEditorDialog extends Dialog {
         try {
             var body = req.get("/nations");
             var data = this.mapper.readValue(body, Response.class);
-            nationsCombo.setItems(data.getData());
+
+            var nations = data.getData().stream().map(e -> {
+                var map = (HashMap<String, Object>) e;
+                return NationResult.map(map);
+            }).toList();
+            nationsCombo.setItems(nations);
         } catch (URISyntaxException | IOException | InterruptedException e) {
             Notifications.error(e);
         }

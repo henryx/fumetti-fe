@@ -20,6 +20,7 @@ import com.vaadin.flow.component.textfield.TextField;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 public class AddNationDialog extends Dialog {
     private final Configuration config;
@@ -28,7 +29,7 @@ public class AddNationDialog extends Dialog {
     private Grid<NationResult> grid;
     private TextField nameField;
     private TextField signField;
-    private ComboBox<CurrencyResult> currenciesCombo;
+    private CurrencyResult currencySelected;
 
     public AddNationDialog(Configuration config) {
         this.config = config;
@@ -51,18 +52,25 @@ public class AddNationDialog extends Dialog {
 
         this.nameField = new TextField("Nome", "", "");
         this.signField = new TextField("Sigla", "", "");
-        this.currenciesCombo = new ComboBox<CurrencyResult>("Valuta");
+        var currenciesCombo = new ComboBox<CurrencyResult>("Valuta");
         try {
             var body = req.get("/currencies");
             var data = this.mapper.readValue(body, Response.class);
-            this.currenciesCombo.setItems(data.getData());
+            var currencies = data.getData().stream().map(ie -> {
+                var map = (HashMap<String, Object>) ie;
+                return CurrencyResult.map(map);
+            }).toList();
+            currenciesCombo.setItems(currencies);
+
+            currenciesCombo.setItemLabelGenerator(CurrencyResult::name);
+            currenciesCombo.addValueChangeListener(e -> currencySelected = e.getValue());
         } catch (URISyntaxException | IOException | InterruptedException e) {
             Notifications.error(e);
         }
 
         var layout = new FormLayout();
         layout.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 2));
-        layout.add(this.nameField, this.signField, this.currenciesCombo);
+        layout.add(this.nameField, this.signField, currenciesCombo);
         layout.setColspan(this.nameField, 2);
 
         return layout;
