@@ -4,7 +4,6 @@ import com.application.fumetti.Configuration;
 import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.EditorData;
 import com.application.fumetti.mappers.data.NationData;
-import com.application.fumetti.mappers.requests.EditorsRequest;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -87,7 +86,8 @@ public class AddEditorDialog extends Dialog {
         save.addClickListener(e -> {
             try {
                 var req = new Requests(this.config);
-                var body = new EditorsRequest(this.nameField.getValue(),
+                var body = new EditorData(null,
+                        this.nameField.getValue(),
                         this.siteField.getValue(),
                         this.websiteField.getValue(),
                         this.nationSelected);
