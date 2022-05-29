@@ -61,7 +61,7 @@ public class NationsView extends VerticalLayout {
 
         var addButton = new Button(new Icon(VaadinIcon.PLUS));
         addButton.addThemeVariants(ButtonVariant.LUMO_ICON);
-        addButton.getElement().setAttribute("aria-label", "Aggiungi editore");
+        addButton.getElement().setAttribute("aria-label", "Aggiungi nazione");
         addButton.addClickListener(clickEvent -> {
             var dialog = new AddNationDialog(this.config);
             dialog.setGrid(this.grid);
