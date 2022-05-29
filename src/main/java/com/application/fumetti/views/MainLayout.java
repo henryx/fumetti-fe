@@ -2,6 +2,7 @@ package com.application.fumetti.views;
 
 
 import com.application.fumetti.views.about.AboutView;
+import com.application.fumetti.views.currencies.CurrenciesView;
 import com.application.fumetti.views.editors.EditorsView;
 import com.application.fumetti.views.helloworld.HelloWorldView;
 import com.application.fumetti.views.nations.NationsView;
@@ -121,6 +122,7 @@ public class MainLayout extends AppLayout {
                 new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
                 new MenuItemInfo("Editori", "la la-school", EditorsView.class),
                 new MenuItemInfo("Nazioni", "la la-globe", NationsView.class),
+                new MenuItemInfo("Valuta", "la la-dollar", CurrenciesView.class),
                 new MenuItemInfo("About", "la la-file", AboutView.class), //
 
         };
