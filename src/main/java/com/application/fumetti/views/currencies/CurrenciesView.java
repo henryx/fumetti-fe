@@ -7,8 +7,12 @@ import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.NumberRenderer;
 import com.vaadin.flow.router.PageTitle;
@@ -57,6 +61,12 @@ public class CurrenciesView extends VerticalLayout {
             Notifications.error(e);
         }
 
-        add(title, this.grid);
+        var addButton = new Button(new Icon(VaadinIcon.PLUS));
+        addButton.addThemeVariants(ButtonVariant.LUMO_ICON);
+        addButton.getElement().setAttribute("aria-label", "Aggiungi valuta");
+        addButton.addClickListener(clickEvent -> {
+        });
+
+        add(title, addButton, this.grid);
     }
 }
