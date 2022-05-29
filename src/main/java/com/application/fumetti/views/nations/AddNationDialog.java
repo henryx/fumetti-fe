@@ -80,6 +80,28 @@ public class AddNationDialog extends Dialog {
         var save = new Button("Salva");
         var cancel = new Button("Annulla", e -> close());
         save.addClickListener(e -> {
+            try {
+                var req = new Requests(this.config);
+                var payload = new NationData(null,
+                        this.nameField.getValue(),
+                        this.signField.getValue(),
+                        this.currencySelected);
+                var body = this.mapper.writeValueAsString(payload);
+                req.post("/nations", body);
+
+                var items = req.get("/nations");
+                var data = this.mapper.readValue(items, Response.class);
+                var nations = data.getData().stream().map(ie -> {
+                    var map = (HashMap<String, Object>) ie;
+                    return NationData.map(map);
+                }).toList();
+                this.grid.setItems(nations);
+                this.grid.getDataProvider().refreshAll();
+
+                close();
+            } catch (URISyntaxException | IOException | InterruptedException ex) {
+                Notifications.error(ex);
+            }
         });
 
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
