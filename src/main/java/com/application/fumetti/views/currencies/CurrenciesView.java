@@ -6,6 +6,8 @@ import com.application.fumetti.mappers.data.CurrencyData;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -41,7 +43,7 @@ public class CurrenciesView extends VerticalLayout {
         var title = new H1("Valuta");
         title.setVisible(true);
 
-        this.grid = new Grid<CurrencyData>();
+        this.grid = new Grid<>();
         this.grid.setSelectionMode(Grid.SelectionMode.MULTI);
         this.grid.addColumn(CurrencyData::id).setHeader("Id").setVisible(false);
         this.grid.addColumn(CurrencyData::name).setHeader("Nome");
@@ -66,7 +68,23 @@ public class CurrenciesView extends VerticalLayout {
         addButton.getElement().setAttribute("aria-label", "Aggiungi valuta");
         addButton.addClickListener(clickEvent -> {
             var dialog = new AddCurrencyDialog(this.config);
-            dialog.setGrid(this.grid);
+            dialog.addOpenedChangeListener(event -> {
+                if (dialog.isOpened()) {
+                    return;
+                }
+                try {
+                    var items = req.get("/currencies");
+                    var data = this.mapper.readValue(items, Response.class);
+                    var currencies = data.getData().stream().map(ie -> {
+                        var map = (HashMap<String, Object>) ie;
+                        return CurrencyData.map(map);
+                    }).toList();
+                    this.grid.setItems(currencies);
+                    this.grid.getDataProvider().refreshAll();
+                } catch (URISyntaxException | IOException | InterruptedException ex) {
+                    Notifications.error(ex);
+                }
+            });
             dialog.open();
         });
 
