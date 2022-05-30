@@ -65,6 +65,9 @@ public class CurrenciesView extends VerticalLayout {
         addButton.addThemeVariants(ButtonVariant.LUMO_ICON);
         addButton.getElement().setAttribute("aria-label", "Aggiungi valuta");
         addButton.addClickListener(clickEvent -> {
+            var dialog = new AddCurrencyDialog(this.config);
+            dialog.setGrid(this.grid);
+            dialog.open();
         });
 
         add(title, addButton, this.grid);
