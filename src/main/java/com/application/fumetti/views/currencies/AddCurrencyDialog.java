@@ -1,7 +1,6 @@
 package com.application.fumetti.views.currencies;
 
 import com.application.fumetti.Configuration;
-import com.application.fumetti.mappers.Response;
 import com.application.fumetti.mappers.data.CurrencyData;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
@@ -10,7 +9,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -20,7 +18,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 
 public class AddCurrencyDialog extends Dialog {
 
@@ -31,7 +28,6 @@ public class AddCurrencyDialog extends Dialog {
     private TextField symbolField;
     private NumberField valueLire;
     private NumberField valueEuro;
-    private Grid<CurrencyData> grid;
 
     public AddCurrencyDialog(Configuration config) {
         this.config = config;
@@ -69,7 +65,7 @@ public class AddCurrencyDialog extends Dialog {
 
     private HorizontalLayout initButtons() {
         var save = new Button("Salva");
-        var cancel = new Button("Annulla", e -> close());
+        var cancel = new Button("Annulla", e -> super.close());
         save.addClickListener(e -> {
             try {
                 var req = new Requests(this.config);
@@ -78,20 +74,11 @@ public class AddCurrencyDialog extends Dialog {
                         this.symbolField.getValue(),
                         BigDecimal.valueOf(this.valueLire.getValue()),
                         BigDecimal.valueOf(this.valueEuro.getValue()));
-                var body = this.mapper.writeValueAsString(payload);
 
+                var body = this.mapper.writeValueAsString(payload);
                 req.post("/currencies", body);
 
-                var items = req.get("/currencies");
-                var data = this.mapper.readValue(items, Response.class);
-                var currencies = data.getData().stream().map(ie -> {
-                    var map = (HashMap<String, Object>) ie;
-                    return CurrencyData.map(map);
-                }).toList();
-                this.grid.setItems(currencies);
-                this.grid.getDataProvider().refreshAll();
-
-                close();
+                super.close();
             } catch (URISyntaxException | IOException | InterruptedException ex) {
                 Notifications.error(ex);
             }
@@ -104,10 +91,5 @@ public class AddCurrencyDialog extends Dialog {
         layout.add(save, cancel);
 
         return layout;
-    }
-
-    public AddCurrencyDialog setGrid(Grid<CurrencyData> grid) {
-        this.grid = grid;
-        return this;
     }
 }
