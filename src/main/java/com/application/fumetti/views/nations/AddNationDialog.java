@@ -25,8 +25,6 @@ import java.util.HashMap;
 public class AddNationDialog extends Dialog {
     private final Configuration config;
     private final ObjectMapper mapper;
-
-    private Grid<NationData> grid;
     private TextField nameField;
     private TextField signField;
     private CurrencyData currencySelected;
@@ -89,15 +87,6 @@ public class AddNationDialog extends Dialog {
                 var body = this.mapper.writeValueAsString(payload);
                 req.post("/nations", body);
 
-                var items = req.get("/nations");
-                var data = this.mapper.readValue(items, Response.class);
-                var nations = data.getData().stream().map(ie -> {
-                    var map = (HashMap<String, Object>) ie;
-                    return NationData.map(map);
-                }).toList();
-                this.grid.setItems(nations);
-                this.grid.getDataProvider().refreshAll();
-
                 close();
             } catch (URISyntaxException | IOException | InterruptedException ex) {
                 Notifications.error(ex);
@@ -111,10 +100,5 @@ public class AddNationDialog extends Dialog {
         layout.add(save, cancel);
 
         return layout;
-    }
-
-    public AddNationDialog setGrid(Grid<NationData> grid) {
-        this.grid = grid;
-        return this;
     }
 }

@@ -6,6 +6,8 @@ import com.application.fumetti.mappers.data.NationData;
 import com.application.fumetti.utils.Notifications;
 import com.application.fumetti.utils.Requests;
 import com.application.fumetti.views.MainLayout;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -64,7 +66,23 @@ public class NationsView extends VerticalLayout {
         addButton.getElement().setAttribute("aria-label", "Aggiungi nazione");
         addButton.addClickListener(clickEvent -> {
             var dialog = new AddNationDialog(this.config);
-            dialog.setGrid(this.grid);
+            dialog.addOpenedChangeListener(event -> {
+                if (dialog.isOpened()) {
+                    return;
+                }
+                try {
+                    var items = req.get("/nations");
+                    var data = this.mapper.readValue(items, Response.class);
+                    var nations = data.getData().stream().map(ie -> {
+                        var map = (HashMap<String, Object>) ie;
+                        return NationData.map(map);
+                    }).toList();
+                    this.grid.setItems(nations);
+                    this.grid.getDataProvider().refreshAll();
+                } catch (URISyntaxException | IOException | InterruptedException ex) {
+                    Notifications.error(ex);
+                }
+            });
             dialog.open();
         });
 
