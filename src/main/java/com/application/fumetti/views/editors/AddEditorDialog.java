@@ -12,7 +12,6 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -31,7 +30,6 @@ public class AddEditorDialog extends Dialog {
     private TextField siteField;
     private TextField websiteField;
     private NationData nationSelected;
-    private Grid<EditorData> grid;
 
     public AddEditorDialog(Configuration config) {
         this.config = config;
@@ -95,11 +93,6 @@ public class AddEditorDialog extends Dialog {
                 var body = this.mapper.writeValueAsString(payload);
                 req.post("/editors", body);
 
-                var items = req.get("/editors");
-                var data = this.mapper.readValue(items, Response.class);
-                this.grid.setItems(data.getData());
-                this.grid.getDataProvider().refreshAll();
-
                 close();
             } catch (URISyntaxException | IOException | InterruptedException ex) {
                 Notifications.error(ex);
@@ -115,8 +108,4 @@ public class AddEditorDialog extends Dialog {
         return layout;
     }
 
-    public AddEditorDialog setGrid(Grid<EditorData> grid) {
-        this.grid = grid;
-        return this;
-    }
 }
