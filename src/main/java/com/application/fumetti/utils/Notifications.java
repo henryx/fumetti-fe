@@ -26,6 +26,7 @@ public class Notifications {
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
 
         notification.add(layout);
+        notification.setDuration(5 * 1000);
         notification.open();
         notification.setPosition(Notification.Position.MIDDLE);
     }
