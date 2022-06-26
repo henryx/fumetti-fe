@@ -86,13 +86,14 @@ public class AddEditorDialog extends Dialog {
         save.addClickListener(e -> {
             try {
                 var req = new Requests(this.config);
-                var body = new EditorData(null,
+                var payload = new EditorData(null,
                         this.nameField.getValue(),
                         this.siteField.getValue(),
                         this.websiteField.getValue(),
                         this.nationSelected);
 
-                req.post("/editors", body.toString());
+                var body = this.mapper.writeValueAsString(payload);
+                req.post("/editors", body);
 
                 var items = req.get("/editors");
                 var data = this.mapper.readValue(items, Response.class);
