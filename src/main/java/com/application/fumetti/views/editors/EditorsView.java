@@ -65,7 +65,24 @@ public class EditorsView extends VerticalLayout {
         addButton.getElement().setAttribute("aria-label", "Aggiungi editore");
         addButton.addClickListener(clickEvent -> {
             var dialog = new AddEditorDialog(this.config);
-            dialog.setGrid(this.grid);
+            dialog.addOpenedChangeListener(event -> {
+                if (dialog.isOpened()) {
+                    return;
+                }
+
+                try {
+                    var items = req.get("/editors");
+                    var data = this.mapper.readValue(items, Response.class);
+                    var editors = data.getData().stream().map(ie -> {
+                        var map = (HashMap<String, Object>) ie;
+                        return EditorData.map(map);
+                    }).toList();
+                    this.grid.setItems(editors);
+                    this.grid.getDataProvider().refreshAll();
+                } catch (URISyntaxException | IOException | InterruptedException ex) {
+                    Notifications.error(ex);
+                }
+            });
             dialog.open();
         });
 
