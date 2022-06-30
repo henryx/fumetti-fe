@@ -2,6 +2,7 @@ package com.application.fumetti.views;
 
 
 import com.application.fumetti.views.about.AboutView;
+import com.application.fumetti.views.collections.CollectionsView;
 import com.application.fumetti.views.currencies.CurrenciesView;
 import com.application.fumetti.views.editors.EditorsView;
 import com.application.fumetti.views.helloworld.HelloWorldView;
@@ -11,17 +12,9 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.NpmPackage;
-import com.vaadin.flow.component.html.Footer;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Nav;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.html.UnorderedList;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.quarkus.annotation.VaadinServiceScoped;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -120,6 +113,7 @@ public class MainLayout extends AppLayout {
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
+                new MenuItemInfo("Collane", "la la-folder", CollectionsView.class),
                 new MenuItemInfo("Editori", "la la-school", EditorsView.class),
                 new MenuItemInfo("Nazioni", "la la-globe", NationsView.class),
                 new MenuItemInfo("Valuta", "la la-dollar", CurrenciesView.class),
