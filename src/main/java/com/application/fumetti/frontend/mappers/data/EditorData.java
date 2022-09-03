@@ -15,6 +15,6 @@ public record EditorData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NO
         var nation = NationData.map(nestedMap);
 
         return new EditorData(Long.valueOf(data.get("id").toString()), data.get("name").toString(),
-                data.get("hq").toString(), data.get("website").toString(), nation);
+                data.get("hq").toString(), data.getOrDefault("website", "").toString(), nation);
     }
 }
