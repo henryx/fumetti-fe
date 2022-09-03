@@ -3,16 +3,11 @@ package com.application.fumetti.frontend.views;
 
 import com.application.fumetti.frontend.views.about.AboutView;
 import com.application.fumetti.frontend.views.helloworld.HelloWorldView;
+import com.application.fumetti.frontend.views.series.SeriesView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.dependency.NpmPackage;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Nav;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.html.UnorderedList;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.router.RouterLink;
 
 /**
@@ -98,7 +93,7 @@ public class MainLayout extends AppLayout {
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
-
+                new MenuItemInfo("Serie", "la la-folder", SeriesView.class),
                 new MenuItemInfo("About", "la la-file", AboutView.class), //
 
         };
