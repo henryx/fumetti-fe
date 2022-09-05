@@ -3,6 +3,7 @@ package com.application.fumetti.frontend.views.series;
 import com.application.fumetti.frontend.Configuration;
 import com.application.fumetti.frontend.mappers.Response;
 import com.application.fumetti.frontend.mappers.data.EditorData;
+import com.application.fumetti.frontend.mappers.data.lookup.series.GenreData;
 import com.application.fumetti.frontend.utils.Notifications;
 import com.application.fumetti.frontend.utils.Requests;
 import com.application.fumetti.frontend.views.MainLayout;
@@ -26,6 +27,7 @@ import java.util.List;
 public class AddSeriesView extends Div {
     private final Configuration config;
     private final ObjectMapper mapper;
+    private GenreData genreSelected;
     private EditorData editorSelected;
 
     public AddSeriesView(Configuration config) {
@@ -40,6 +42,7 @@ public class AddSeriesView extends Div {
 
         var name = new TextField("Nome");
         var editorCombo = new ComboBox<EditorData>("Editore");
+        var genreCombo = new ComboBox<GenreData>("Genere");
 
         try {
             editorCombo.setItems(fetchData("/editors").stream().map(ie -> {
@@ -47,8 +50,16 @@ public class AddSeriesView extends Div {
                 return EditorData.map(map);
             }).toList());
 
+            genreCombo.setItems(fetchData("/series/genre").stream().map(ie -> {
+                var map = (HashMap<String, Object>) ie;
+                return GenreData.map(map);
+            }).toList());
+
             editorCombo.setItemLabelGenerator(EditorData::name);
             editorCombo.addValueChangeListener(e -> editorSelected = e.getValue());
+
+            genreCombo.setItemLabelGenerator(GenreData::description);
+            genreCombo.addValueChangeListener(e -> genreSelected = e.getValue());
 
         } catch (URISyntaxException | IOException | InterruptedException ex) {
             Notifications.error(ex);
@@ -62,7 +73,7 @@ public class AddSeriesView extends Div {
         center.setAlignItems(FlexComponent.Alignment.STRETCH);
 
         upper.add(title);
-        center.add(name, editorCombo);
+        center.add(name, editorCombo, genreCombo);
         add(upper, center, bottom);
     }
 
