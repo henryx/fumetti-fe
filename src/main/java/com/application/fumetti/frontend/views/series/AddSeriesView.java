@@ -38,6 +38,10 @@ public class AddSeriesView extends Div {
         var center = new VerticalLayout();
         var bottom = new VerticalLayout();
 
+        upper.setSpacing(false);
+        center.setSpacing(false);
+        bottom.setSpacing(false);
+
         var title = new H2("Aggiungi serie");
 
         var name = new TextField("Nome");
