@@ -50,8 +50,15 @@ public class AddSeriesView extends Div {
         var bottom = new VerticalLayout();
 
         upper.setSpacing(false);
-        center.setSpacing(false);
         bottom.setSpacing(false);
+
+        upper.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        upper.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+
+        center.setSpacing(false);
+        center.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        center.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
+        center.setAlignItems(FlexComponent.Alignment.STRETCH);
 
         var title = new H2("Aggiungi serie");
 
@@ -95,20 +102,14 @@ public class AddSeriesView extends Div {
 
             statusCombo.setItemLabelGenerator(StatusData::description);
             statusCombo.addValueChangeListener(e -> statusSelected = e.getValue());
+
+            upper.add(title);
+            center.add(this.name, editorCombo, genreCombo, frequencyCombo, statusCombo, this.noteArea);
+            bottom.add(this.initButtons());
         } catch (URISyntaxException | IOException | InterruptedException ex) {
             Notifications.error(ex);
         }
 
-        upper.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-        upper.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
-
-        center.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-        center.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
-        center.setAlignItems(FlexComponent.Alignment.STRETCH);
-
-        upper.add(title);
-        center.add(name, editorCombo, genreCombo, frequencyCombo, statusCombo, this.noteArea);
-        bottom.add(this.initButtons());
         add(upper, center, bottom);
     }
 
