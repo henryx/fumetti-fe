@@ -102,13 +102,13 @@ public class AddSeriesView extends Div {
 
             statusCombo.setItemLabelGenerator(StatusData::description);
             statusCombo.addValueChangeListener(e -> statusSelected = e.getValue());
-
-            upper.add(title);
-            center.add(this.name, editorCombo, genreCombo, frequencyCombo, statusCombo, this.noteArea);
-            bottom.add(this.initButtons());
         } catch (URISyntaxException | IOException | InterruptedException ex) {
             Notifications.error(ex);
         }
+
+        upper.add(title);
+        center.add(this.name, editorCombo, genreCombo, frequencyCombo, statusCombo, this.noteArea);
+        bottom.add(this.initButtons());
 
         add(upper, center, bottom);
     }
