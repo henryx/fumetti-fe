@@ -11,43 +11,32 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 public class Notifications {
-    public static void error(Exception e) {
-        Notification notification = new Notification();
-        notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
 
-        Div text = new Div(new Text("Failed to retrieve data: " + e.getMessage()));
+    private static void init(NotificationVariant variant, String message) {
+        var notification = new Notification();
+        var text = new Div(new Text(message));
+        var closeButton = new Button(new Icon("lumo", "cross"));
+        var layout = new HorizontalLayout();
 
-        Button closeButton = new Button(new Icon("lumo", "cross"));
         closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
         closeButton.getElement().setAttribute("aria-label", "Close");
         closeButton.addClickListener(event -> notification.close());
 
-        HorizontalLayout layout = new HorizontalLayout(text, closeButton);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        layout.add(text, closeButton);
 
+        notification.addThemeVariants(variant);
         notification.add(layout);
         notification.setDuration(5 * 1000);
-        notification.open();
         notification.setPosition(Notification.Position.MIDDLE);
+        notification.open();
+    }
+
+    public static void error(Exception e) {
+        init(NotificationVariant.LUMO_ERROR, "Failed to retrieve data: " + e.getMessage());
     }
 
     public static void success(String msg) {
-        Notification notification = new Notification();
-        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-
-        Div text = new Div(new Text(msg));
-
-        Button closeButton = new Button(new Icon("lumo", "cross"));
-        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
-        closeButton.getElement().setAttribute("aria-label", "Close");
-        closeButton.addClickListener(event -> notification.close());
-
-        HorizontalLayout layout = new HorizontalLayout(text, closeButton);
-        layout.setAlignItems(FlexComponent.Alignment.CENTER);
-
-        notification.add(layout);
-        notification.setDuration(5 * 1000);
-        notification.open();
-        notification.setPosition(Notification.Position.MIDDLE);
+        init(NotificationVariant.LUMO_SUCCESS, msg);
     }
 }
