@@ -3,6 +3,7 @@ package com.application.fumetti.frontend.views.series;
 import com.application.fumetti.frontend.Configuration;
 import com.application.fumetti.frontend.mappers.Response;
 import com.application.fumetti.frontend.mappers.data.EditorData;
+import com.application.fumetti.frontend.mappers.data.SeriesData;
 import com.application.fumetti.frontend.mappers.data.lookup.series.FrequencyData;
 import com.application.fumetti.frontend.mappers.data.lookup.series.GenreData;
 import com.application.fumetti.frontend.mappers.data.lookup.series.StatusData;
@@ -10,10 +11,13 @@ import com.application.fumetti.frontend.utils.Notifications;
 import com.application.fumetti.frontend.utils.Requests;
 import com.application.fumetti.frontend.views.MainLayout;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
@@ -104,7 +108,40 @@ public class AddSeriesView extends Div {
 
         upper.add(title);
         center.add(name, editorCombo, genreCombo, frequencyCombo, statusCombo, this.noteArea);
+        bottom.add(this.initButtons());
         add(upper, center, bottom);
+    }
+
+    private HorizontalLayout initButtons() {
+        var save = new Button("Salva");
+        var cancel = new Button("Annulla");
+        cancel.addClickListener(e -> cancel.getUI().ifPresent(ui -> ui.navigate("/series")));
+        save.addClickListener(e -> {
+            try {
+                var req = new Requests(this.config);
+                var payload = new SeriesData(null,
+                        this.name.getValue(),
+                        this.genreSelected,
+                        this.editorSelected,
+                        this.frequencySelected,
+                        this.statusSelected,
+                        this.noteArea.getValue());
+
+                var body = this.mapper.writeValueAsString(payload);
+                req.post("/api/v1/series", body);
+
+                save.getUI().ifPresent(ui -> ui.navigate("/series"));
+            } catch (URISyntaxException | IOException | InterruptedException ex) {
+                Notifications.error(ex);
+            }
+        });
+        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        save.getStyle().set("margin-inline-end", "auto");
+
+        var layout = new HorizontalLayout();
+        layout.add(save, cancel);
+
+        return layout;
     }
 
     private List fetchData(String endpoint) throws IOException, URISyntaxException, InterruptedException {
