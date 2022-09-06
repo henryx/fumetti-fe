@@ -3,7 +3,9 @@ package com.application.fumetti.frontend.views.series;
 import com.application.fumetti.frontend.Configuration;
 import com.application.fumetti.frontend.mappers.Response;
 import com.application.fumetti.frontend.mappers.data.EditorData;
+import com.application.fumetti.frontend.mappers.data.lookup.series.FrequencyData;
 import com.application.fumetti.frontend.mappers.data.lookup.series.GenreData;
+import com.application.fumetti.frontend.mappers.data.lookup.series.StatusData;
 import com.application.fumetti.frontend.utils.Notifications;
 import com.application.fumetti.frontend.utils.Requests;
 import com.application.fumetti.frontend.views.MainLayout;
@@ -13,6 +15,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -27,8 +30,12 @@ import java.util.List;
 public class AddSeriesView extends Div {
     private final Configuration config;
     private final ObjectMapper mapper;
-    private GenreData genreSelected;
+    private final TextArea noteArea;
+    private final TextField name;
     private EditorData editorSelected;
+    private FrequencyData frequencySelected;
+    private GenreData genreSelected;
+    private StatusData statusSelected;
 
     public AddSeriesView(Configuration config) {
         this.config = config;
@@ -44,20 +51,34 @@ public class AddSeriesView extends Div {
 
         var title = new H2("Aggiungi serie");
 
-        var name = new TextField("Nome");
+        this.name = new TextField("Nome");
         var editorCombo = new ComboBox<EditorData>("Editore");
         var genreCombo = new ComboBox<GenreData>("Genere");
+        var frequencyCombo = new ComboBox<FrequencyData>("Periodicità");
+        var statusCombo = new ComboBox<StatusData>("Stato");
+        this.noteArea = new TextArea("Note");
 
         try {
-            editorCombo.setItems(fetchData("/editors").stream().map(ie -> {
+            editorCombo.setItems(fetchData("/api/v1/editors").stream().map(ie -> {
                 var map = (HashMap<String, Object>) ie;
                 return EditorData.map(map);
             }).toList());
 
-            genreCombo.setItems(fetchData("/series/genre").stream().map(ie -> {
+            genreCombo.setItems(fetchData("/api/v1/series/genre").stream().map(ie -> {
                 var map = (HashMap<String, Object>) ie;
                 return GenreData.map(map);
             }).toList());
+
+            frequencyCombo.setItems(fetchData("/api/v1/series/frequencies").stream().map(ie -> {
+                var map = (HashMap<String, Object>) ie;
+                return FrequencyData.map(map);
+            }).toList());
+
+            statusCombo.setItems(fetchData("/api/v1/series/status").stream().map(ie -> {
+                        var map = (HashMap<String, Object>) ie;
+                        return StatusData.map(map);
+                    }).toList()
+            );
 
             editorCombo.setItemLabelGenerator(EditorData::name);
             editorCombo.addValueChangeListener(e -> editorSelected = e.getValue());
@@ -65,6 +86,11 @@ public class AddSeriesView extends Div {
             genreCombo.setItemLabelGenerator(GenreData::description);
             genreCombo.addValueChangeListener(e -> genreSelected = e.getValue());
 
+            frequencyCombo.setItemLabelGenerator(FrequencyData::description);
+            frequencyCombo.addValueChangeListener(e -> frequencySelected = e.getValue());
+
+            statusCombo.setItemLabelGenerator(StatusData::description);
+            statusCombo.addValueChangeListener(e -> statusSelected = e.getValue());
         } catch (URISyntaxException | IOException | InterruptedException ex) {
             Notifications.error(ex);
         }
@@ -77,7 +103,7 @@ public class AddSeriesView extends Div {
         center.setAlignItems(FlexComponent.Alignment.STRETCH);
 
         upper.add(title);
-        center.add(name, editorCombo, genreCombo);
+        center.add(name, editorCombo, genreCombo, frequencyCombo, statusCombo, this.noteArea);
         add(upper, center, bottom);
     }
 
