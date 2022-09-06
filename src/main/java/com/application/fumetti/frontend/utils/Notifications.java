@@ -30,4 +30,24 @@ public class Notifications {
         notification.open();
         notification.setPosition(Notification.Position.MIDDLE);
     }
+
+    public static void success(String msg) {
+        Notification notification = new Notification();
+        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+
+        Div text = new Div(new Text(msg));
+
+        Button closeButton = new Button(new Icon("lumo", "cross"));
+        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        closeButton.getElement().setAttribute("aria-label", "Close");
+        closeButton.addClickListener(event -> notification.close());
+
+        HorizontalLayout layout = new HorizontalLayout(text, closeButton);
+        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+
+        notification.add(layout);
+        notification.setDuration(5 * 1000);
+        notification.open();
+        notification.setPosition(Notification.Position.MIDDLE);
+    }
 }
