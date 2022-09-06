@@ -2,7 +2,6 @@ package com.application.fumetti.frontend.views;
 
 
 import com.application.fumetti.frontend.views.about.AboutView;
-import com.application.fumetti.frontend.views.helloworld.HelloWorldView;
 import com.application.fumetti.frontend.views.series.SeriesView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -92,10 +91,8 @@ public class MainLayout extends AppLayout {
 
     private MenuItemInfo[] createMenuItems() {
         return new MenuItemInfo[]{ //
-                new MenuItemInfo("Hello World", "la la-globe", HelloWorldView.class), //
                 new MenuItemInfo("Serie", "la la-folder", SeriesView.class),
                 new MenuItemInfo("About", "la la-file", AboutView.class), //
-
         };
     }
 
