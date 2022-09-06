@@ -131,6 +131,7 @@ public class AddSeriesView extends Div {
                 var body = this.mapper.writeValueAsString(payload);
                 req.post("/api/v1/series", body);
 
+                Notifications.success("Inserted series successfully");
                 save.getUI().ifPresent(ui -> ui.navigate("/series"));
             } catch (URISyntaxException | IOException | InterruptedException ex) {
                 Notifications.error(ex);

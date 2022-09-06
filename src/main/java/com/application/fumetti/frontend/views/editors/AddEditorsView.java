@@ -1,6 +1,7 @@
 package com.application.fumetti.frontend.views.editors;
 
 import com.application.fumetti.frontend.Configuration;
+import com.application.fumetti.frontend.utils.Notifications;
 import com.application.fumetti.frontend.views.MainLayout;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.button.Button;
@@ -36,6 +37,8 @@ public class AddEditorsView extends Div {
         var cancel = new Button("Annulla");
         cancel.addClickListener(e -> cancel.getUI().ifPresent(ui -> ui.navigate("/editors")));
         save.addClickListener(e -> {
+            Notifications.success("Editor inserted successfully");
+            save.getUI().ifPresent(ui -> ui.navigate("/editors"));
         });
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.getStyle().set("margin-inline-end", "auto");
