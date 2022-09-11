@@ -12,10 +12,12 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.quarkus.annotation.VaadinServiceScoped;
 
 @PageTitle("Serie")
 @Route(value = "/series", layout = MainLayout.class)
+@RouteAlias(value = "", layout = MainLayout.class)
 public class SeriesView extends Div {
     private final Configuration config;
 
