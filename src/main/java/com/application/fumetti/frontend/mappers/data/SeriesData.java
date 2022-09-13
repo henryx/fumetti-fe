@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 public record SeriesData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NON_NULL) Long id,
                          @JsonProperty("name") String name,
@@ -23,13 +24,14 @@ public record SeriesData(@JsonProperty("id") @JsonInclude(JsonInclude.Include.NO
         @SuppressWarnings("unchecked") var nestedStatus = (HashMap<String, Object>) data.get("status");
         @SuppressWarnings("unchecked") var nestedEditor = (HashMap<String, Object>) data.get("editor");
 
-
+        var id = Long.valueOf(data.get("id").toString());
+        var name = data.get("name").toString();
         var genre = GenreData.map(nestedGenre);
         var frequency = FrequencyData.map(nestedFrequency);
         var status = StatusData.map(nestedStatus);
         var editor = EditorData.map(nestedEditor);
+        var note = (Optional.ofNullable(data.get("note")).orElse("")).toString();
 
-        return new SeriesData(Long.valueOf(data.get("id").toString()), data.get("name").toString(),
-                genre, editor, frequency, status, data.get("note").toString());
+        return new SeriesData(id, name, genre, editor, frequency, status, note);
     }
 }
